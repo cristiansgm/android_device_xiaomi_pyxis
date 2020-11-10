@@ -23,12 +23,12 @@
 
 #include <fstream>
 #include <cmath>
-
 #define COMMAND_NIT 10
-#define PARAM_NIT_630_FOD 1
+#define PARAM_NIT_FOD 1
 #define PARAM_NIT_NONE 0
 
-#define DISPPARAM_PATH "/sys/devices/platform/soc/ae00000.qcom,mdss_mdp/drm/card0/card0-DSI-1/disp_param"
+
+#define DISPPARAM_PATH "/sys/class/drm/card0-DSI-1/disp_param"
 #define DISPPARAM_HBM_FOD_ON "0x20000"
 #define DISPPARAM_HBM_FOD_OFF "0xE0000"
 
@@ -66,6 +66,19 @@ static void set(const std::string& path, const T& value) {
     std::ofstream file(path);
     file << value;
 }
+/*  
+    map the polynomial function here based on the discovered points
+    ALPHA = 1.0 | BRIGHTNESS = 0
+    ALPHA = 0.7 | BRIGHTNESS = 150
+    ALPHA = 0.5 | BRIGHTNESS = 475
+    ALPHA = 0.3 | BRIGHTNESS = 950
+    ALPHA = 0.0 | BRIGHTNESS = 2047
+*/
+float p1 = 7.747 * pow(10, -8);
+float p2 = -0.0004924;
+float p3 = 0.6545;
+float p4 = 58.82;
+float q1 = 58.82;
 
 FingerprintInscreen::FingerprintInscreen() {
     this->mFodCircleVisible = false;
@@ -94,27 +107,44 @@ Return<void> FingerprintInscreen::onFinishEnroll() {
 
 Return<void> FingerprintInscreen::onPress() {
     acquire_wake_lock(PARTIAL_WAKE_LOCK, LOG_TAG);
+    if(this->mFodCircleVisible)
+    {
+    if(!Set)
+    {
     set(DISPPARAM_PATH, DISPPARAM_HBM_FOD_ON);
-    xiaomiFingerprintService->extCmd(COMMAND_NIT, PARAM_NIT_630_FOD);
+    this->Set =true;
+    }
+    xiaomiFingerprintService->extCmd(COMMAND_NIT, PARAM_NIT_FOD);
+    this->mFodCircleVisible=false;
+    }
     return Void();
 }
 
 Return<void> FingerprintInscreen::onRelease() {
     release_wake_lock(LOG_TAG);
+    if(!this->mFodCircleVisible)
+    {
+    if(Set){
     set(DISPPARAM_PATH, DISPPARAM_HBM_FOD_OFF);
+    this->Set =false;
+    }
     xiaomiFingerprintService->extCmd(COMMAND_NIT, PARAM_NIT_NONE);
+    this->mFodCircleVisible = true;
+    }
     return Void();
 }
 
 Return<void> FingerprintInscreen::onShowFODView() {
     set(FOD_STATUS_PATH, FOD_STATUS_ON);
     this->mFodCircleVisible = true;
+    this->Set=false;
     return Void();
 }
 
 Return<void> FingerprintInscreen::onHideFODView() {
     set(FOD_STATUS_PATH, FOD_STATUS_OFF);
     this->mFodCircleVisible = false;
+    this->Set =true;
     return Void();
 }
 
@@ -136,11 +166,7 @@ Return<int32_t> FingerprintInscreen::getDimAmount(int32_t /* brightness */) {
     int realBrightness = get(BRIGHTNESS_PATH, 0);
     float alpha;
 
-    if (realBrightness > 500) {
-        alpha = 1.0 - pow(realBrightness / 2047.0 * 430.0 / 600.0, 0.455);
-    } else {
-        alpha = 1.0 - pow(realBrightness / 1680.0, 0.455);
-    }
+    alpha = (p1 * pow(realBrightness, 3) + p2 * pow(realBrightness, 2) + p3 * realBrightness + p4) / (realBrightness + q1);
 
     return 255 * alpha;
 }

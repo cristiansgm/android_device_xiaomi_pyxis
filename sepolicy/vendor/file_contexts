@@ -4,6 +4,9 @@
 # IR
 /dev/lirc0                                    u:object_r:ir_spi_device:s0
 
+# Serial-to-Usb support
+/dev/ttyUSB([0-9])+                    u:object_r:radio_device:s0
+
 # Camera
 /(vendor|system/vendor)/bin/remosaic_daemon   u:object_r:remosaic_daemon_exec:s0
 
@@ -25,6 +28,10 @@
 # Fingerprint devices
 /dev/goodix_fp                                u:object_r:fingerprint_device:s0
 /dev/vfsspi                                   u:object_r:fingerprint_device:s0
+
+# FOD
+/sys/devices/virtual/touch/tp_dev/fod_status  u:object_r:sysfs_fod:s0
+/vendor/bin/adsprpcd		u:object_r:adsprpcd_exec:s0
 
 # GPS devices
 /dev/bbd_control                              u:object_r:gps_device:s0
