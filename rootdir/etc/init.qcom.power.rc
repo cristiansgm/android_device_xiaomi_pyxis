@@ -33,7 +33,10 @@ on init
     write /dev/stune/system-background/schedtune.colocate 0
     write /dev/stune/foreground/schedtune.colocate 0
     write /dev/stune/top-app/schedtune.colocate 1
-
+    write /dev/stune/background/schedtune.prefer_idle 1
+    write /dev/stune/system-background/schedtune.prefer_idle 1
+    write /dev/stune/global/schedtune.prefer_idle 1
+    
     # Disable UFS powersaving
     write /sys/devices/platform/soc/${ro.boot.bootdevice}/clkscale_enable 0
     write /sys/devices/platform/soc/${ro.boot.bootdevice}/clkgate_enable 0
@@ -62,10 +65,14 @@ on boot
     # For cpusets initialize for Silver only first and then Silver + Gold
     # Silver only configuration cannot work with 0-7
     write /dev/cpuset/top-app/cpus 0-7
-    write /dev/cpuset/background/cpus 4-5
-    write /dev/cpuset/system-background/cpus 2-5
-    write /dev/cpuset/restricted/cpus 2-5
-
+    write /dev/cpuset/background/cpus 0-1
+    write /dev/cpuset/system-background/cpus 0-1
+    write /dev/cpuset/audio-app/cpus 0-1
+    
+#Enable autosleep to save power when device isn't used
+    write /sys/power/autosleep "on"
+    write /sys/power/autosleep 1
+    
 on property:init.svc.vendor.charger=running
     setprop persist.sys.usb.config mass_storage
     load_system_props
@@ -108,10 +115,10 @@ on enable-low-power
 
     # Core control parameters on silver
     write /sys/devices/system/cpu/cpu0/core_ctl/not_preferred "0 0 0 0 1 1"
-    write /sys/devices/system/cpu/cpu0/core_ctl/min_cpus 2
+    write /sys/devices/system/cpu/cpu0/core_ctl/min_cpus 4
     write /sys/devices/system/cpu/cpu0/core_ctl/busy_up_thres 60
     write /sys/devices/system/cpu/cpu0/core_ctl/busy_down_thres 40
-    write /sys/devices/system/cpu/cpu0/core_ctl/offline_delay_ms 10
+    write /sys/devices/system/cpu/cpu0/core_ctl/offline_delay_ms 100
     write /sys/devices/system/cpu/cpu0/core_ctl/is_big_cluster 0
     write /sys/devices/system/cpu/cpu0/core_ctl/task_thres 8
 
@@ -124,21 +131,22 @@ on enable-low-power
 
     # Configure governor settings for little cluster
     write /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor "schedutil"
-    write /sys/devices/system/cpu/cpu0/cpufreq/schedutil/hispeed_load 30
     write /sys/devices/system/cpu/cpu0/cpufreq/schedutil/rate_limit_us 0
+    write /sys/devices/system/cpu/cpu0/cpufreq/schedutil/pl 1
     write /sys/devices/system/cpu/cpu0/cpufreq/schedutil/hispeed_freq 1209600
     write /sys/devices/system/cpu/cpu0/cpufreq/scaling_min_freq 576000
 
     # Configure governor settings for big cluster
     write /sys/devices/system/cpu/cpu6/cpufreq/scaling_governor "schedutil"
     write /sys/devices/system/cpu/cpu6/cpufreq/schedutil/rate_limit_us 0
+    write /sys/devices/system/cpu/cpu6/cpufreq/schedutil/pl 1
     write /sys/devices/system/cpu/cpu6/cpufreq/schedutil/hispeed_load 85
     write /sys/devices/system/cpu/cpu6/cpufreq/schedutil/hispeed_freq 1344000
     write /sys/devices/system/cpu/cpu6/cpufreq/scaling_min_freq 652800
     write /sys/devices/system/cpu/cpu6/sched_load_boost -6
     write /sys/devices/system/cpu/cpu7/sched_load_boost -6
-    write /sys/module/cpu_boost/parameters/input_boost_freq "0:0"
-    write /sys/module/cpu_boost/parameters/input_boost_ms 0
+    write /sys/module/cpu_boost/parameters/input_boost_freq "0:1209600"
+    write /sys/module/cpu_boost/parameters/input_boost_ms 40
 
     # Enable bus-dcvs
     write /sys/class/devfreq/soc:qcom,cpubw/governor "bw_hwmon"
@@ -179,9 +187,9 @@ on enable-low-power
     chown system /sys/class/devfreq/soc:qcom,l3-cdsp/userspace/set_freq
 
     # Set cpuset parameters
-    write /dev/cpuset/background/cpus 0-3
-    write /dev/cpuset/system-background/cpus 0-3
-    
+    write /dev/cpuset/background/cpus 0-1
+    write /dev/cpuset/system-background/cpus 0-1
+
     # Turn off scheduler boost at the end
     write /proc/sys/kernel/sched_boost 0
 
