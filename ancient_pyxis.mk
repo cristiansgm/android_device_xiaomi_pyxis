@@ -6,9 +6,10 @@
 
 # Inherit some common Bliss stuff.
 $(call inherit-product, vendor/ancient/config/common_full_phone.mk)
-TARGET_BOOT_ANIMATION_RES := 1080p
+TARGET_BOOT_ANIMATION_RES := 1080
 TARGET_GAPPS_ARCH :=arm64
 TARGET_HAS_FOD :=true
+ANCIENT_NOGAPPS := true
 
 # Inherit from pyxis device.
 $(call inherit-product, $(LOCAL_PATH)/device.mk)

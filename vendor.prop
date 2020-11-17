@@ -21,7 +21,7 @@ persist.vendor.audio.avs.afe_api_version=2
 vendor.audio.keep_alive.disabled=false
 vendor.audio.volume.headset.gain.depcal=true
 vendor.audio.adm.buffering.ms=6
-vendor.audio.dolby.ds2.enabled=false
+vendor.audio.dolby.ds2.enabled=true
 vendor.audio.dolby.ds2.hardbypass=false
 vendor.audio.enable.dp.for.voice=false
 vendor.audio.apptype.multirec.enabled=false
@@ -192,7 +192,7 @@ persist.radio.volte.dan_support=true
 telephony.lteOnCdmaDevice=1
 
 # FM
-vendor.hw.fm.init=0
+vendor.hw.fm.init=1
 ro.vendor.fm.use_audio_session=true
 
 # Time
