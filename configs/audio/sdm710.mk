@@ -6,9 +6,14 @@ PRODUCT_PROPERTY_OVERRIDES += \
 PRODUCT_PROPERTY_OVERRIDES += \
     vendor.audio_hal.period_size=192
 
+##Ambisonic Capture
+PRODUCT_PROPERTY_OVERRIDES += \
+persist.vendor.audio.ambisonic.capture=false \
+persist.vendor.audio.ambisonic.auto.profile=false
+
 ##fluencetype can be "fluence" or "fluencepro" or "none"
 PRODUCT_PROPERTY_OVERRIDES += \
-ro.vendor.audio.sdk.fluencetype=fluence\
+ro.vendor.audio.sdk.fluencetype=none\
 persist.vendor.audio.fluence.voicecall=true\
 persist.vendor.audio.fluence.voicerec=false\
 persist.vendor.audio.fluence.speaker=true\
@@ -60,7 +65,7 @@ audio.offload.video=true
 
 #Enable audio track offload by default
 PRODUCT_PROPERTY_OVERRIDES += \
-vendor.audio.offload.track.enable=false
+vendor.audio.offload.track.enable=true
 
 #Enable music through deep buffer
 PRODUCT_PROPERTY_OVERRIDES += \
@@ -68,7 +73,7 @@ audio.deep_buffer.media=true
 
 #enable voice path for PCM VoIP by default
 PRODUCT_PROPERTY_OVERRIDES += \
-vendor.voice.path.for.pcm.voip=false
+vendor.voice.path.for.pcm.voip=true
 
 #Enable multi channel aac through offload
 PRODUCT_PROPERTY_OVERRIDES += \
@@ -81,7 +86,7 @@ vendor.audio.dolby.ds2.hardbypass=false
 
 #Disable Multiple offload sesison
 PRODUCT_PROPERTY_OVERRIDES += \
-vendor.audio.offload.multiple.enabled=true
+vendor.audio.offload.multiple.enabled=false
 
 #Disable Compress passthrough playback
 PRODUCT_PROPERTY_OVERRIDES += \
@@ -97,7 +102,7 @@ vendor.audio.offload.gapless.enabled=true
 
 #enable pbe effects
 PRODUCT_PROPERTY_OVERRIDES += \
-vendor.audio.safx.pbe.enabled=true
+vendor.audio.safx.pbe.enabled=false
 
 #parser input buffer size(256kb) in byte stream mode
 PRODUCT_PROPERTY_OVERRIDES += \
@@ -111,9 +116,17 @@ vendor.audio.flac.sw.decoder.24bit=true
 PRODUCT_PROPERTY_OVERRIDES += \
 persist.vendor.bt.a2dp_offload_cap=sbc-aptx-aptxhd-aac-ldac
 
+# A2DP offload support
+PRODUCT_PROPERTY_OVERRIDES += \
+ro.bluetooth.a2dp_offload.supported=false
+
 # Disable A2DP offload
 PRODUCT_PROPERTY_OVERRIDES += \
 persist.bluetooth.a2dp_offload.disabled=true
+
+# A2DP offload DSP supported encoder list
+PRODUCT_PROPERTY_OVERRIDES += \
+persist.bluetooth.a2dp_offload.cap=sbc-aac-aptx-aptxhd-ldac
 
 #enable software decoders for ALAC and APE
 PRODUCT_PROPERTY_OVERRIDES += \
@@ -123,11 +136,15 @@ vendor.audio.use.sw.ape.decoder=true
 
 #enable hw aac encoder by default
 PRODUCT_PROPERTY_OVERRIDES += \
-vendor.audio.hw.aac.encoder=false
+vendor.audio.hw.aac.encoder=true
 
 #audio becoming noisy intent broadcast delay
 PRODUCT_PROPERTY_OVERRIDES += \
 audio.sys.noisy.broadcast.delay=600
+
+#offload pausetime out duration to 3 secs to inline with other outputs
+PRODUCT_PROPERTY_OVERRIDES += \
+audio.sys.offload.pstimeout.secs=3
 
 #Enable HIFI audio support for internal codec
 PRODUCT_PROPERTY_OVERRIDES += \
@@ -138,22 +155,18 @@ PRODUCT_PROPERTY_OVERRIDES += \
 ro.af.client_heap_size_kbyte=7168
 
 #keep alive is needed by default for ffv
-# TO CHECK
 PRODUCT_PROPERTY_OVERRIDES += \
 vendor.audio.keep_alive.disabled=false
 
 #enable headset calibration
-# TO CHECK
 PRODUCT_PROPERTY_OVERRIDES += \
 vendor.audio.volume.headset.gain.depcal=true
 
 #enable dualmic fluence for voice communication
-# TO CHECK
 PRODUCT_PROPERTY_OVERRIDES += \
 persist.audio.fluence.voicecomm=true
 
 #enable AAC frame ctl for A2DP sinks
-# TO CHECK
 PRODUCT_PROPERTY_OVERRIDES += \
 persist.vendor.bt.aac_frm_ctl.enabled=true
 
@@ -177,9 +190,9 @@ vendor.audio.feature.external_dsp.enable=false \
 vendor.audio.feature.external_speaker.enable=false \
 vendor.audio.feature.external_speaker_tfa.enable=false \
 vendor.audio.feature.fluence.enable=true \
-vendor.audio.feature.fm.enable=false \
-vendor.audio.feature.hdmi_edid.enable=false \
-vendor.audio.feature.hdmi_passthrough.enable=false \
+vendor.audio.feature.fm.enable=true \
+vendor.audio.feature.hdmi_edid.enable=true \
+vendor.audio.feature.hdmi_passthrough.enable=true \
 vendor.audio.feature.hfp.enable=true \
 vendor.audio.feature.hifi_audio.enable=true \
 vendor.audio.feature.hwdep_cal.enable=false \
