@@ -326,10 +326,10 @@
             "Value": "2597"
         },
         {
-      "PowerHint": "INTERACTION",
-      "Node": "UfsClkGateEnable",
-      "Duration": 0,
-      "Value": "0"
+            "PowerHint": "INTERACTION",
+            "Node": "UfsClkGateEnable",
+            "Duration": 0,
+            "Value": "0"
         },
         {
             "PowerHint": "LAUNCH",
