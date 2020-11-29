@@ -32,14 +32,11 @@ EXTRA_FOD_ANIMATIONS := true
 # Overlays
 DEVICE_PACKAGE_OVERLAYS += \
     $(LOCAL_PATH)/overlay \
-		$(LOCAL_PATH)/overlay-custom
-
-PRODUCT_ENFORCE_RRO_TARGETS := *
-PRODUCT_ENFORCE_RRO_EXCLUDED_OVERLAYS += \
-    $(LOCAL_PATH)/overlay-custom/lineage-sdk
+    $(LOCAL_PATH)/overlay-custom
 
 PRODUCT_PACKAGES += \
-    NoCutoutOverlay
+    NoCutoutOverlay \
+    RemovePackages
 
 # Properties
 PRODUCT_COMPATIBLE_PROPERTY_OVERRIDE := true
@@ -393,7 +390,7 @@ PRODUCT_COPY_FILES += \
 # IRQ
 PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/configs/msm_irqbalance.conf:$(TARGET_COPY_OUT_VENDOR)/etc/msm_irqbalance.conf
-    
+
 # Telephony
 PRODUCT_PACKAGES += \
     ims-ext-common \
