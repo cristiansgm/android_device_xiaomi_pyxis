@@ -36,7 +36,8 @@ DEVICE_PACKAGE_OVERLAYS += \
 
 PRODUCT_PACKAGES += \
     NoCutoutOverlay \
-    RemovePackages
+    RemovePackages\
+    MusicPlayer
 
 # Properties
 PRODUCT_COMPATIBLE_PROPERTY_OVERRIDE := true
