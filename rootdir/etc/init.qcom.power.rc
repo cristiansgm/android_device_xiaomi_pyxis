@@ -73,11 +73,10 @@ on boot
     # Silver only configuration cannot work with 0-7
     write /dev/cpuset/top-app/cpus 0-7
     write /dev/cpuset/background/cpus 2-3
-    write /dev/cpuset/rt/cpus 0-3
     write /dev/cpuset/system-background/cpus 0-1
     write /dev/cpuset/audio-app/cpus 0-1
     write /dev/cpuset/foreground/cpus 2-5,7
-    write /dev/cpuset/restricted 2-5
+    write /dev/cpuset/restricted/cpus 2-5,7
     
 on property:init.svc.vendor.charger=running
     setprop persist.sys.usb.config mass_storage
