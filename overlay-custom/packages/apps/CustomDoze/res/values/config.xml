@@ -24,5 +24,5 @@
     <string name="config_custom_tilt">xiaomi.sensor.pickup</string>
 
     <!-- Defines the custom pocket sensor used by various OEMs like OnePlus-->
-    <string name="config_custom_proximity">xiaomi.sensor.pocket</string>
+    <string name="config_custom_proximity"></string>
 </resources>

@@ -1190,9 +1190,4 @@
     <!-- Whether to use in-built Screen Record service -->
     <bool name="config_showScreenRecord">true</bool>
     
-    <!-- Whether device supports in-display fingerprint when screen is turned off -->
-    <bool name="config_supportsInDisplayFingerprintGesture">true</bool>
-    
-    <!-- Defines the custom pocket sensor used by various OEMs like OnePlus-->
-    <string name="config_custom_proximity">xiaomi.sensor.pocket</string>
 </resources>
