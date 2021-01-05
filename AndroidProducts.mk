@@ -5,9 +5,9 @@
 #
 
 PRODUCT_MAKEFILES := \
-    $(LOCAL_DIR)/ancient_pyxis.mk
+    $(LOCAL_DIR)/revengeos_pyxis.mk
 
 COMMON_LUNCH_CHOICES := \
-    ancient_pyxis-eng \
-    ancient_pyxis-userdebug \
-    ancient_pyxis-user
+    revengeos_pyxis-eng \
+    revengeos_pyxis-userdebug \
+    revengeos_pyxis-user
