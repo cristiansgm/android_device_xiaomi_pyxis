@@ -16,4 +16,4 @@ Display | 1080x2340 pixels, 6.39" AMOLED
 Rear Camera  | 48MP+8MP+2MP, AI Camera
 Front Camera | 32MP
 
-![Xiaomi MI 9 Lite](https://fdn2.gsmarena.com/vv/pics/xiaomi/xiaomi-mi-cc9-2.jpg "Xiaomi MI 9 Lite")
+![Xiaomi MI 9 Lite](https://fdn2.gsmarena.com/vv/pics/xiaomi/xiaomi-mi-cc9-3.jpg "Xiaomi MI 9 Lite")
